@@ -1,7 +1,37 @@
-.card-content {
-    background-color: rgb(51, 51, 51)
+/* .card-content {
+    background-color: rgb(51, 51, 51);
+}
+
+img {
+    float: right;
+}
+
+.search-box {
+    border-radius: 3px;
+    width: 400px;
+    background-color: #f2f2f2;
+    height: 45px;
+    float: left;
+}
+
+button {
+    float: left;
+    height: 45px;
 }
 
 .page-footer {
+    margin: 150px;
+    width: auto;
     background-color: rgb(51, 51, 51);
+} */
+
+#output {
+    min-height: 5em;
+}
+
+.center-block {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
 }

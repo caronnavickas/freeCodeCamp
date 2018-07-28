@@ -16,8 +16,10 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
         crossorigin="anonymous" />
+
     <link rel="stylesheet" href="css/style.css" />
 </head>
+
 
 <body>
     <!--[if lt IE 7]>
@@ -31,6 +33,7 @@
                     <span class="flow-text">
                         <div class="card-panel">
                             <span class="black-text text-darken-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg">
                                 <h6>Free Code Camp - Front End Development</h6>
                                 <span class="card-title">
                                     <h2 class="featurette-heading">
@@ -46,71 +49,76 @@
     </div>
 
 
-    <div class="container ">
-        <div class="col-sm "></div>
-        <div class="row ">
-            <p>
-                <h5>Click
-                    <a href="https://en.wikipedia.org/wiki/Special:Random" title="Search for a random Wikipedia article" target="_blank">
-                        <i class="material-icons">
-                            shuffle</i>
-                    </a>
-                    to search for a
-                    <i>random</i>
-                    article</h5>
-            </p>
+    <div class="container">
+        <div class="col-sm"></div>
+        <div class="row">
+            <h5>Click
+                <a href="https://en.wikipedia.org/wiki/Special:Random" title="Search for a random Wikipedia article" target="_blank">
+                    <i class="material-icons">
+                        shuffle</i>
+                </a>
+                to search for a
+                <i>random</i>
+                article</h5>
         </div>
     </div>
 
 
     <div class="container">
-        <div class="col-sm "></div>
-        <div class="row ">
-            <p>
-                <h5>Click
-                    <a href="https://www.mediawiki.org/wiki/API:Main_page " title="Search Wikipedia.org" target="_blank">
-                        <i class="material-icons">search</i>
-                    </a>
-                    <div class="ui action left icon input">
-                        <input class="prompt" type="text" placeholder="Enter your search topic here">
-                        <div class="results"></div> to enter a
-                        <i>keyword</i>
-                        to search for a topic
-                </h5>
-            </p>
+
+        <div class="row">
+            <div class="search-box" role="search" "input-field col s6">
+                <input class="form-control" id="searchTerm" type="text" placeholder="Search Wikipedia">
+            </div>
+            <button id="search" class="btn waves-effect waves-light" type="submit" name="action">Search
+            </button>
+        </div>
+
+        <div id="spinner" class="preloader-wrapper big active center-block center-align hide">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
         </div>
-    </div>
 
+        <div id="output"></div>
 
-    <footer class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                    <h5 class="white-text">Contact me</h5>
-                </div>
-                <div class="col l4 offset-l2 s12">
-                    <h5 class="white-text">Links</h5>
-                    <ul>
-                        <li>
-                            <a class="grey-text text-lighten-3" target="_blank" href="https://www.facebook.com/caron.navickas">
-                                <i class="fa fa-facebook-official
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Contact me:</h5>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li>
+                                <a class="grey-text text-lighten-3" target="_blank" href="https://www.facebook.com/caron.navickas">
+                                    <i class="fa fa-facebook-official
                                 " aria-hidden="true "></i>&nbsp;&nbsp;Find me on Facebook</a>
-                        </li>
-                        <li>
-                            <a class="grey-text text-lighten-3" target="_blank" href="https://www.linkedin.com/in/caron-navickas-925a81113/ ">
-                                <i class="fa fa-linkedin-square " aria-hidden="true "></i>&nbsp;&nbsp;Find me on Linkedin</a>
-                        </li>
-                        <li>
-                            <a class="grey-text text-lighten-3" href="mailto:caron.navickas@gmail.com?subject=General
+                            </li>
+                            <li>
+                                <a class="grey-text text-lighten-3" target="_blank" href="https://www.linkedin.com/in/caron-navickas-925a81113/ ">
+                                    <i class="fa fa-linkedin-square " aria-hidden="true "></i>&nbsp;&nbsp;Find me on Linkedin</a>
+                            </li>
+                            <li>
+                                <a class="grey-text text-lighten-3" href="mailto:caron.navickas@gmail.com?subject=General
                             Enquiry ">
-                                <i class="fa fa-envelope mail " aria-hidden="true "></i>&nbsp;&nbsp;Email me</a>
-                        </li>
+                                    <i class="fa fa-envelope mail " aria-hidden="true "></i>&nbsp;&nbsp;Email me</a>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        </footer>
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js
@@ -118,8 +126,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
                                                     " integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin=" anonymous "></script>
         <script src="js/app.js "></script>
-        <script src="scripts/main.js"></script>
 </body>
-</footer>
 
 </html>
