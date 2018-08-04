@@ -49,7 +49,7 @@
     </div>
 
 
-    <div class="container">
+    <!-- <div class="container">
         <div class="col-sm"></div>
         <div class="row">
             <h5>Click
@@ -60,18 +60,19 @@
                 to search for a
                 <i>random</i>
                 article</h5>
-        </div>
-    </div>
+        </div> 
+    </div>-->
 
 
     <div class="container">
 
         <div class="row">
             <div class="search-box" role="search" "input-field col s6">
-                <input class="form-control" id="searchTerm" type="text" placeholder="Search Wikipedia">
+                <input id="searchTerm" class="form-control" type="text" placeholder="Search Wikipedia">
             </div>
-            <button id="search" class="btn waves-effect waves-light" type="submit" name="action">Search
-            </button>
+            <button id="search" class="btn blue waves-effect waves-light" type="submit" name="action">Search</button>
+            <button id="clear" class="btn blue waves-effect waves-light hide" name="action">Clear Search</button>
+            <button id="random" class="btn green waves-effect waves-light" name="action">Random Article</button>
         </div>
 
         <div id="spinner" class="preloader-wrapper big active center-block center-align hide">
