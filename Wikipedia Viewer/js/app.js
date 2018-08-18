@@ -25,16 +25,29 @@ function clearSearch() {
     $("#output").html("");
 }
 
+function truncate(string, maxAllowed) {
+    var ellipsis = '&#x02026;';
+    var newString = string.trim();
+
+    if (string.length > maxAllowed) {
+        newString = `${string.substr(0, maxAllowed - 3).trim()}${ellipsis}`;
+    }
+
+    return newString;
+}
+
 function generateColumn(cardContent, cardLink, cardTitle, i) {
+    var truncatedCardContent = truncate(cardContent, 120);
+
     var outputColumn = `
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
-                <a href="${cardLink}" target="_blank" alt=${cardTitle.toLowerCase()}><img id='image${i}' src=""></a>
+                <a href="${cardLink}" target="_blank" alt=${cardTitle.toLowerCase()}><img id='image${i}' class="centered-and-cropped" src=""></a>
                 <span class="card-title">${cardTitle}</span>
             </div>
             <div class="card-content">
-                <p>${cardContent}</p>
+                <p>${truncatedCardContent}</p>
             </div>
             <div class="card-action">
                 <a href="${cardLink}" target="_blank">Link To Article</a>
@@ -134,7 +147,7 @@ function doSearch() {
             contentType: 'application/javascript',
             success: function (data) {
                 $("#output").html(""); // clears out contents from earlier searched
-                $("#output").append("<h5>Click to open in Wikipedia:</h5>")
+                $("#output").append("<h5>Click to open in Wikipedia:</h5>");
 
                 var c = 0;
                 var card = '';
@@ -174,11 +187,14 @@ function doSearch() {
                         success: function (data) {
                             for (var i = 0; i < data.query.pages.length; i++) {
                                 if (data.query.pages[i].hasOwnProperty("thumbnail")) {
-                                    //     $("#image" + (data.query.pages[i].index - 1)).html(`src='${data.query.pages[i].thumbnail.source}' class='responsive-img valign'>`);
                                     $("#image" + (data.query.pages[i].index - 1)).attr('src', data.query.pages[i].thumbnail.source);
                                 } else {
-                                    // $("#image" + (data.query.pages[i].index - 1)).html("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Article_icon_cropped.svg/512px-Article_icon_cropped.svg.png' class='responsive-img valign articleIcon'>");
-                                    $("#image" + (data.query.pages[i].index - 1)).attr('src', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Article_icon_cropped.svg/512px-Article_icon_cropped.svg.png');
+                                    $("#image" + (data.query.pages[i].index - 1)).attr('src', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg');
+
+                                    // attribution
+                                    // <a title="By Smartscrutiny [CC BY-SA 4.0 
+                                    //     (https://creativecommons.org/licenses/by-sa/4.0
+                                    //    )], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Oldpapertexture02.jpg"><img width="128" alt="Oldpapertexture02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg"></a>
                                 }
                             }
                         },
@@ -220,5 +236,4 @@ $(document).ready(function () {
     $('#random').click(function () {
         randomSearch();
     });
-
 });
