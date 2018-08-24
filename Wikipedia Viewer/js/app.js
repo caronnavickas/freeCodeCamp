@@ -22,7 +22,7 @@ function disableClearButton() {
 
 function clearSearch() {
     $('#searchTerm').val('');
-    $("#output").html("");
+    $('#output').html('');
 }
 
 function truncate(string, maxAllowed) {
@@ -84,6 +84,62 @@ function outputCards(cards) {
     );
 }
 
+function outputData(data, length) {
+    var c = 0;
+    var card = '';
+    var cards = '';
+    var t = 3;
+    var l = length;
+    var m = l % t;
+
+    for (var i = 0; i < l; i++) {
+        var cardContent = data[2][i];
+        var cardLink = data[3][i];
+        var cardTitle = data[1][i];
+
+        card = `${generateColumn(cardContent, cardLink, cardTitle, i)}`;
+        cards = `${cards}${card}`;
+        c++;
+
+        if (i < (l - m)) {
+            if (c === t) {
+                outputCards(cards);
+                cards = '';
+                c = 0;
+            }
+        } else {
+            if (c === m) {
+                outputCards(cards);
+            }
+        }
+    }
+}
+
+function outputThumbnails(url) {
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'jsonp',
+        success: function (data) {
+            for (var i = 0; i < data.query.pages.length; i++) {
+                if (data.query.pages[i].hasOwnProperty('thumbnail')) {
+                    $('#image' + (data.query.pages[i].index - 1)).attr('src', data.query.pages[i].thumbnail.source);
+                } else {
+                    $('#image' + (data.query.pages[i].index - 1)).attr('src', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg');
+
+                    // attribution
+                    // <a title="By Smartscrutiny [CC BY-SA 4.0 
+                    //     (https://creativecommons.org/licenses/by-sa/4.0
+                    //    )], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Oldpapertexture02.jpg"><img width="128" alt="Oldpapertexture02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg"></a>
+                }
+            }
+        },
+        error: function () {
+            console.log('Unable to retrieve thumbnails.');
+        }
+    })
+}
+
 function doSearch() {
     var searchTerm = $(SEARCH_TERM_ID).val();
     var isValidSearch = IsValidSearch(searchTerm);
@@ -92,7 +148,7 @@ function doSearch() {
         // Control UI
         $('#search').addClass('hide');
         $('#spinner').removeClass('hide');
-        $("#output").html(""); // clear content from earlier searches
+        $('#output').html(''); // clear content from earlier searches
         enableClearButton();
 
         // Do Work
@@ -146,74 +202,30 @@ function doSearch() {
             dataType: 'jsonp',
             contentType: 'application/javascript',
             success: function (data) {
-                $("#output").html(""); // clears out contents from earlier searched
-                $("#output").append("<h5>Click to open in Wikipedia:</h5>");
+                $('#output').html(''); // clears out contents from earlier searched
 
-                var c = 0;
-                var card = '';
-                var cards = '';
                 var l = data[1].length;
-                var t = 3;
-                var m = l % t;
-
-                for (var i = 0; i < l; i++) {
-                    var cardContent = data[2][i];
-                    var cardLink = data[3][i];
-                    var cardTitle = data[1][i];
-
-                    card = `${generateColumn(cardContent, cardLink, cardTitle, i)}`;
-                    cards = `${cards}${card}`;
-                    c++;
-
-                    if (i < (l - m)) {
-                        if (c === t) {
-                            outputCards(cards);
-                            cards = '';
-                            c = 0;
-                        }
-                    } else {
-                        if (c === m) {
-                            outputCards(cards);
-                        }
-                    }
-                }
 
                 if (l > 0) {
-                    // make sure that we have data to search images for...
-                    $.ajax({
-                        url: buildApiDetail,
-                        method: "GET",
-                        dataType: "jsonp",
-                        success: function (data) {
-                            for (var i = 0; i < data.query.pages.length; i++) {
-                                if (data.query.pages[i].hasOwnProperty("thumbnail")) {
-                                    $("#image" + (data.query.pages[i].index - 1)).attr('src', data.query.pages[i].thumbnail.source);
-                                } else {
-                                    $("#image" + (data.query.pages[i].index - 1)).attr('src', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg');
-
-                                    // attribution
-                                    // <a title="By Smartscrutiny [CC BY-SA 4.0 
-                                    //     (https://creativecommons.org/licenses/by-sa/4.0
-                                    //    )], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Oldpapertexture02.jpg"><img width="128" alt="Oldpapertexture02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Oldpapertexture02.jpg/128px-Oldpapertexture02.jpg"></a>
-                                }
-                            }
-                        },
-                        error: function () {
-                            console.log("second call unsuccessful");
-                        }
-                    })
+                    $('#output').append("<h5>Click to open in Wikipedia:</h5>");
+                    outputData(data, l);
+                    outputThumbnails(buildApiDetail);
+                } else {
+                    $('#output').append('<p class="red-text text-darken-4">No data was returned from your search criteria. Please try again.</p>');
                 }
+
                 // Control UI
                 hideSpinner();
             },
             error: function (err) {
-                console.error("error: ", err);
+                console.error('Error: ', err);
                 // Control UI
                 hideSpinner();
             }
         });
     } else {
-        // TODO: what to do if the search term is invalid
+        // NOT EXPECTING AN INVALID SEARCH REQUEST, BUT, HERE IS WHERE WE WOULD ADD A HANDLER FOR THIS TYPE
+        // OF EDGE CASE.
     }
 }
 
