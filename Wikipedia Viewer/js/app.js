@@ -4,7 +4,7 @@ function randomSearch() {
     window.open('https://en.wikipedia.org/wiki/Special:Random', '_blank');
 }
 
-function enableSearchButton() {
+function showSearchButton() {
     $('#search').removeClass('hide');
 }
 
@@ -12,11 +12,11 @@ function hideSpinner() {
     $('#spinner').addClass('hide');
 }
 
-function enableClearButton() {
+function showClearButton() {
     $('#clear').removeClass('hide');
 }
 
-function disableClearButton() {
+function hideClearButton() {
     $('#clear').addClass('hide');
 }
 
@@ -149,7 +149,7 @@ function doSearch() {
         $('#search').addClass('hide');
         $('#spinner').removeClass('hide');
         $('#output').html(''); // clear content from earlier searches
-        enableClearButton();
+        showClearButton();
 
         // Do Work
         var encodedSearchTerm = encodeURIComponent(searchTerm);
@@ -242,8 +242,8 @@ $(document).ready(function () {
 
     $('#clear').click(function () {
         clearSearch();
-        disableClearButton();
-        enableSearchButton();
+        hideClearButton();
+        showSearchButton();
     });
 
     $('#random').click(function () {
