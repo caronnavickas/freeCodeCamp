@@ -21,7 +21,7 @@ function hideClearButton() {
 }
 
 function clearSearch() {
-    $('#searchTerm').val('');
+    $(SEARCH_TERM_ID).val('');
     $('#output').html('');
 }
 
@@ -29,8 +29,8 @@ function truncate(string, maxAllowed) {
     var ellipsis = '&#x02026;';
     var newString = string.trim();
 
-    if (string.length > maxAllowed) {
-        newString = `${string.substr(0, maxAllowed - 3).trim()}${ellipsis}`;
+    if (newString.length > maxAllowed) {
+        newString = `${newString.substr(0, maxAllowed - 3).trim()}${ellipsis}`;
     }
 
     return newString;
@@ -38,12 +38,14 @@ function truncate(string, maxAllowed) {
 
 function generateColumn(cardContent, cardLink, cardTitle, i) {
     var truncatedCardContent = truncate(cardContent, 120);
-
+    // TODO: put background on title
     var outputColumn = `
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
-                <a href="${cardLink}" target="_blank" alt=${cardTitle.toLowerCase()}><img id='image${i}' class="centered-and-cropped" src=""></a>
+                <a href="${cardLink}" target="_blank" alt=${cardTitle.toLowerCase()}>
+                    <img id='image${i}' class="centered-and-cropped" src="">
+                </a>
                 <span class="card-title">${cardTitle}</span>
             </div>
             <div class="card-content">
@@ -77,22 +79,22 @@ function onKeyUp(e) {
 }
 
 function outputCards(cards) {
-    $('#output').append(
-        `<div class="row">
-        ${cards}
-    </div>`
-    );
+    $('#output').append(`
+        <div class="row">
+            ${cards}
+        </div>
+    `);
 }
 
 function outputData(data, length) {
-    var c = 0;
+    var c = 0; // number of cards
     var card = '';
     var cards = '';
-    var t = 3;
+    var t = 3; // columns
     var l = length;
-    var m = l % t;
+    var m = l % t; // m = modulo
 
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < l; i++) { // i is index of data[]
         var cardContent = data[2][i];
         var cardLink = data[3][i];
         var cardTitle = data[1][i];
@@ -224,13 +226,13 @@ function doSearch() {
             }
         });
     } else {
-        // NOT EXPECTING AN INVALID SEARCH REQUEST, BUT, HERE IS WHERE WE WOULD ADD A HANDLER FOR THIS TYPE
-        // OF EDGE CASE.
+        $('#output').html(''); // clears out contents from earlier searched
+        $('#output').append('<p class="red-text text-darken-4">Enter a search term.</p>');
     }
 }
 
 $(document).ready(function () {
-    $('#searchTerm, #search').keyup(function (event) {
+    $(`${SEARCH_TERM_ID}, #search`).keyup(function (event) {
         if (event.which == 13) {
             doSearch();
         }
