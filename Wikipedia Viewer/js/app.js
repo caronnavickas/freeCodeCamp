@@ -230,9 +230,10 @@ function doSearch() {
 }
 
 $(document).ready(function () {
-    // TODO: make sure search works on pressing ENTER key (use key up (not keypress or key down))
-    $(SEARCH_TERM_ID).on('keyup', function (e) {
-        onKeyUp(e);
+    $('#searchTerm, #search').keyup(function (event) {
+        if (event.which == 13) {
+            doSearch();
+        }
     });
 
     $('#search').click(function () {
