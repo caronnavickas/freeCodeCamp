@@ -38,13 +38,17 @@ function truncate(string, maxAllowed) {
 
 function generateColumn(cardContent, cardLink, cardTitle, i) {
     var truncatedCardContent = truncate(cardContent, 120);
-    // TODO: put background on title
+    var defaultImage = 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Hourglass_%28PSF%29.png';
+
+    // attribution
+    //  <a title="By Pearson Scott Foresman [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Hourglass_(PSF).png"><img width="512" alt="Hourglass (PSF)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Hourglass_%28PSF%29.png/512px-Hourglass_%28PSF%29.png"></a>
+
     var outputColumn = `
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
                 <a href="${cardLink}" target="_blank" alt=${cardTitle.toLowerCase()}>
-                    <img id='image${i}' class="centered-and-cropped" src="">
+                    <img id='image${i}' class="centered-and-cropped" src="${defaultImage}">
                 </a>
                 <span class="card-title">${cardTitle}</span>
             </div>
@@ -87,6 +91,7 @@ function outputCards(cards) {
 }
 
 function outputData(data, length) {
+    var complete = false;
     var c = 0; // number of cards
     var card = '';
     var cards = '';
@@ -115,6 +120,12 @@ function outputData(data, length) {
             }
         }
     }
+
+    if (i === l) {
+        complete = true;
+    }
+
+    return complete;
 }
 
 function outputThumbnails(url) {
@@ -207,11 +218,14 @@ function doSearch() {
                 $('#output').html(''); // clears out contents from earlier searched
 
                 var l = data[1].length;
+                var hasDataCompleted = false;
 
                 if (l > 0) {
                     $('#output').append("<h5>Click to open in Wikipedia:</h5>");
-                    outputData(data, l);
-                    outputThumbnails(buildApiDetail);
+                    hasDataCompleted = outputData(data, l);
+                    if (hasDataCompleted) {
+                        outputThumbnails(buildApiDetail);
+                    }
                 } else {
                     $('#output').append('<p class="red-text text-darken-4">No data was returned from your search criteria. Please try again.</p>');
                 }
